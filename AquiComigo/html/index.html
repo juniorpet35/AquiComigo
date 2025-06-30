@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Projeto Aqui Comigo</title>
+    <link rel="icon" href="../img/favicon.ico" type="image/x-icon" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+
+    <header class="navbar">
+        <a href="#"><img src="../img/logo-aquicomigo.png" alt="Logo Aqui Comigo" class="logo"></a>
+        <nav>
+            <ul>
+                <li><a href="#sobre">Sobre</a></li>
+                <li><a href="#missao">Missão</a></li>
+                <li><a href="tratamento-e-nutricao.html">Tratamento e Nutrição</a></li>
+                <li><a href="#contato">Contato</a></li>
+            </ul>
+        </nav>
+        <button id="theme-toggle" class="theme-button">🌙</button>
+    </header>
+
+    <main>
+      <section id="mapa-container">
+
+        <div id="search-panel">
+            <h2>Busque por Endereço</h2>
+            <p>Preencha os campos para encontrar a farmácia mais próxima de você.</p>
+            
+            <div class="address-inputs">
+                <input type="text" id="cidade-input" placeholder="Cidade*">
+                <input type="text" id="bairro-input" placeholder="Bairro*">
+                <input type="text" id="rua-input" placeholder="Rua (Opcional)">
+            </div>
+            <button id="address-search-btn">Buscar Farmácia</button>
+            <div id="search-result"></div>
+        </div>
+    
+      <div id="map"></div>
+    
+    </section>
+
+        <section id="chamada-acao" class="hero">
+            <h1>Bem-vindo ao Projeto Aqui Comigo</h1>
+            <p>Conectando pessoas, comunidades e oportunidades sociais.</p>
+            <a href="https://forms.gle/3UYj4f3Qxi6Cv4fY7" target="_blank" rel="noopener noreferrer" id="open-form-btn" class="cta-button">Quero Participar</a>
+        </section>
+        
+        </main>
+
+    <footer>
+        <p>&copy; 2025 Projeto Aqui Comigo. Todos os direitos reservados.</p>
+    </footer>
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+    <script src="../js/map.js"></script>
+    <script src="../js/script.js"></script>
+</body>
+</html>
