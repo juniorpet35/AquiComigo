@@ -8176,18 +8176,17 @@
     "TELEFONE": "(21) 2643-1586"
   },
   {
-    "UF": "RJ",
-    "COD_MUNICIPIO": 3305703,
-    "MUNICIPIO": "TERESOPOLIS",
-    "CNPJ": "16.929.574/0001-89",
-    "FARMACIA": "DROGARIA MOSQUERA E NOGUEIRA DE TERESOPOLIS LTDA - ME",
-    "ENDERECO": "R BEIRA LINHA 317, CASCATA GUARANI, Teresópolis, RJ",
-    "BAIRRO": "CASCATA GUARANI",
-    "DATA_CREDENCIAMENTO": null,
-    "TIPO": "Farmácia Popular",
-    "LATITUDE": -22.4246,
-    "LONGITUDE": -42.9644,
-    "TELEFONE": "(21) 2742-5353"
+  "UF": "RJ",
+  "MUNICIPIO": "Teresópolis",
+  "CNPJ": null,
+  "FARMACIA": "DROGARIA MAIS SAUDE BEIRA LINHA",
+  "ENDERECO": "Rua Beira Linha, 317",
+  "BAIRRO": "Cascata Guarani",
+  "DATA_CREDENCIAMENTO": null,
+  "TIPO": "Farmácia Popular",
+  "LATITUDE": -22.42233,
+  "LONGITUDE": -42.9749,
+  "TELEFONE": "(21) 96666-5850"
   },
   {
     "UF": "RJ",
