@@ -1,32 +1,50 @@
 document.addEventListener('DOMContentLoaded', function() {
     const filtroBotoes = document.querySelectorAll('.filtro-btn');
     const conteudoCategorias = document.querySelectorAll('.categoria-conteudo');
+    const filtroSelect = document.getElementById('filtro-select');
+    const mainNav = document.querySelector('.nav-principal');
+    const hamburgerBtn = document.querySelector('.hamburger-menu');
 
-    // Mostra a mensagem inicial por padrão
-    const conteudoInicial = document.getElementById('inicio');
-    if (conteudoInicial) {
-        conteudoInicial.style.display = 'block';
+    if (hamburgerBtn && mainNav) {
+        hamburgerBtn.addEventListener('click', () => {
+            mainNav.classList.toggle('active');
+        });
+    }
+
+    function mostrarConteudo(categoriaAlvo) {
+        conteudoCategorias.forEach(conteudo => {
+            conteudo.classList.remove('active');
+        });
+
+        const conteudoAlvo = document.getElementById(categoriaAlvo);
+        if (conteudoAlvo) {
+            conteudoAlvo.classList.add('active');
+        }
+
+        filtroBotoes.forEach(btn => {
+            if (btn.getAttribute('data-category') === categoriaAlvo) {
+                btn.classList.add('active');
+            } else {
+                btn.classList.remove('active');
+            }
+        });
+
+        if(filtroSelect.value !== categoriaAlvo) {
+            filtroSelect.value = categoriaAlvo;
+        }
     }
 
     filtroBotoes.forEach(botao => {
         botao.addEventListener('click', function() {
-            // Remove a classe 'active' de todos os botões
-            filtroBotoes.forEach(btn => btn.classList.remove('active'));
-            // Adiciona a classe 'active' ao botão clicado
-            this.classList.add('active');
-
             const categoriaAlvo = this.getAttribute('data-category');
-
-            // Esconde todos os conteúdos
-            conteudoCategorias.forEach(conteudo => {
-                conteudo.style.display = 'none';
-            });
-
-            // Mostra o conteúdo da categoria alvo
-            const conteudoAlvo = document.getElementById(categoriaAlvo);
-            if (conteudoAlvo) {
-                conteudoAlvo.style.display = 'block';
-            }
+            mostrarConteudo(categoriaAlvo);
         });
     });
+
+    filtroSelect.addEventListener('change', function() {
+        const categoriaAlvo = this.value;
+        mostrarConteudo(categoriaAlvo);
+    });
+
+    mostrarConteudo('inicio');
 });
