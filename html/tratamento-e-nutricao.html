@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tratamento e Nutrição - Projeto Aqui Comigo</title>
-    <link rel="icon" href="../img/favicon.ico" type="image/x-icon" />
+    <link rel="icon" href="../img/icon-aquicomigo.ico" type="image/x-icon" />
     <link rel="stylesheet" href="../css/style.css">
     <link rel="stylesheet" href="../css/tratamento.css"> 
 </head>
@@ -12,7 +12,7 @@
 
     <header class="navbar">
         <a href="index.html"><img src="../img/logo-aquicomigo.png" alt="Logo Aqui Comigo" class="logo"></a>
-        <nav>
+        <nav class="nav-principal">
             <ul>
                 <li><a href="index.html#sobre">Sobre</a></li>
                 <li><a href="index.html#missao">Missão</a></li>
@@ -21,6 +21,11 @@
             </ul>
         </nav>
         <button id="theme-toggle" class="theme-button">🌙</button>
+        <button class="hamburger-menu">
+            <div class="bar"></div>
+            <div class="bar"></div>
+            <div class="bar"></div>
+        </button>
     </header>
 
     <main class="container-principal">
@@ -28,6 +33,7 @@
         <p class="subtitulo">Selecione uma condição abaixo para ver as orientações de cuidado.</p>
 
         <div id="categoria-filtros">
+            <button class="filtro-btn active" data-category="inicio">Início</button>
             <button class="filtro-btn" data-category="anticoncepcao">Anticoncepção</button>
             <button class="filtro-btn" data-category="asma">Asma</button>
             <button class="filtro-btn" data-category="diabetes">Diabetes</button>
@@ -42,11 +48,30 @@
             <button class="filtro-btn" data-category="rinite">Rinite</button>
         </div>
 
+        <div class="filtros-mobile">
+            <label for="filtro-select">Selecione uma Categoria:</label>
+            <select id="filtro-select">
+                <option value="inicio">Início</option>
+                <option value="anticoncepcao">Anticoncepção</option>
+                <option value="asma">Asma</option>
+                <option value="diabetes">Diabetes</option>
+                <option value="diabetes-cardio">Diabetes + Doença Cardiovascular</option>
+                <option value="dignidade-menstrual">Dignidade Menstrual</option>
+                <option value="dislipidemia">Dislipidemia</option>
+                <option value="parkinson">Doença de Parkinson</option>
+                <option value="glaucoma">Glaucoma</option>
+                <option value="hipertensao">Hipertensão</option>
+                <option value="incontinencia">Incontinência Urinária</option>
+                <option value="osteoporose">Osteoporose</option>
+                <option value="rinite">Rinite</option>
+            </select>
+        </div>
+
         <div id="conteudo-categorias">
             
-            <div id="inicio" class="categoria-conteudo" style="display: block;">
+            <div id="inicio" class="categoria-conteudo active">
                 <h3>Bem-vindo(a) ao Guia de Saúde!</h3>
-                <p style="font-size: 1.1em;">Navegue pelas abas acima para encontrar informações sobre medicamentos gratuitos, dicas de alimentação e como cuidar melhor da sua saúde. As informações sobre medicamentos são baseadas no programa Farmácia Popular do Brasil.</p>
+                <p style="font-size: 1.1em;">Navegue pelas abas para encontrar informações sobre medicamentos gratuitos, dicas de alimentação e como cuidar melhor da sua saúde. As informações sobre medicamentos são baseadas no programa Farmácia Popular do Brasil.</p>
             </div>
 
             <div id="anticoncepcao" class="categoria-conteudo">
@@ -60,7 +85,14 @@
                 </ul>
                 <h3>Como Retirar</h3>
                 <div class="dicas-saude">
-                    <p>Para retirar, apresente receita médica, documento com foto e CPF em uma farmácia credenciada com o selo "Aqui Tem Farmácia Popular".</p>
+                    <h4>Documentos Necessários (Regra Geral)</h4>
+                    <p>Para retirar medicamentos ou insumos, o paciente (ou seu representante) deve apresentar os seguintes documentos em uma farmácia credenciada com o selo "Aqui Tem Farmácia Popular":</p>
+                    <ul>
+                        <li><strong>Documento oficial com foto e número do CPF.</strong></li>
+                        <li><strong>Receita médica</strong> dentro do prazo de validade. A receita pode ser do SUS ou de um serviço particular.</li>
+                    </ul>
+                    <h4>Como Retirar para Outra Pessoa (Procuração / Pacientes Acamados)</h4>
+                    <p>Caso o paciente não possa comparecer, a retirada pode ser feita por um representante legal. Para isso, o representante deve apresentar seus próprios documentos (CPF e documento com foto), os documentos do paciente e uma procuração que autoriza a retirada (não precisa de firma reconhecida).</p>
                 </div>
                 <h3>Sugestões de Alimentação e Hidratação</h3>
                 <div class="dicas-saude">
@@ -82,7 +114,14 @@
                 </ul>
                 <h3>Como Retirar</h3>
                 <div class="dicas-saude">
-                    <p>Para retirar, apresente receita médica, documento com foto e CPF em uma farmácia credenciada com o selo "Aqui Tem Farmácia Popular".</p>
+                    <h4>Documentos Necessários (Regra Geral)</h4>
+                    <p>Para retirar medicamentos ou insumos, o paciente (ou seu representante) deve apresentar os seguintes documentos em uma farmácia credenciada com o selo "Aqui Tem Farmácia Popular":</p>
+                    <ul>
+                        <li><strong>Documento oficial com foto e número do CPF.</strong></li>
+                        <li><strong>Receita médica</strong> dentro do prazo de validade. A receita pode ser do SUS ou de um serviço particular.</li>
+                    </ul>
+                    <h4>Como Retirar para Outra Pessoa (Procuração / Pacientes Acamados)</h4>
+                    <p>Caso o paciente não possa comparecer, a retirada pode ser feita por um representante legal. Para isso, o representante deve apresentar seus próprios documentos (CPF e documento com foto), os documentos do paciente e uma procuração que autoriza a retirada (não precisa de firma reconhecida).</p>
                 </div>
                 <h3>Sugestões de Alimentação</h3>
                 <div class="dicas-saude">
@@ -111,7 +150,14 @@
                 </ul>
                 <h3>Como Retirar</h3>
                 <div class="dicas-saude">
-                    <p>Para retirar, apresente receita médica, documento com foto e CPF em uma farmácia credenciada com o selo "Aqui Tem Farmácia Popular".</p>
+                    <h4>Documentos Necessários (Regra Geral)</h4>
+                    <p>Para retirar medicamentos ou insumos, o paciente (ou seu representante) deve apresentar os seguintes documentos em uma farmácia credenciada com o selo "Aqui Tem Farmácia Popular":</p>
+                    <ul>
+                        <li><strong>Documento oficial com foto e número do CPF.</strong></li>
+                        <li><strong>Receita médica</strong> dentro do prazo de validade. A receita pode ser do SUS ou de um serviço particular.</li>
+                    </ul>
+                    <h4>Como Retirar para Outra Pessoa (Procuração / Pacientes Acamados)</h4>
+                    <p>Caso o paciente não possa comparecer, a retirada pode ser feita por um representante legal. Para isso, o representante deve apresentar seus próprios documentos (CPF e documento com foto), os documentos do paciente e uma procuração que autoriza a retirada (não precisa de firma reconhecida).</p>
                 </div>
                 <h3>Sugestões de Alimentação</h3>
                 <div class="dicas-saude">
@@ -136,7 +182,14 @@
                 </ul>
                 <h3>Como Retirar</h3>
                 <div class="dicas-saude">
-                    <p>Para retirar, apresente receita médica, documento com foto e CPF em uma farmácia credenciada com o selo "Aqui Tem Farmácia Popular".</p>
+                    <h4>Documentos Necessários (Regra Geral)</h4>
+                    <p>Para retirar medicamentos ou insumos, o paciente (ou seu representante) deve apresentar os seguintes documentos em uma farmácia credenciada com o selo "Aqui Tem Farmácia Popular":</p>
+                    <ul>
+                        <li><strong>Documento oficial com foto e número do CPF.</strong></li>
+                        <li><strong>Receita médica</strong> dentro do prazo de validade. A receita pode ser do SUS ou de um serviço particular.</li>
+                    </ul>
+                    <h4>Como Retirar para Outra Pessoa (Procuração / Pacientes Acamados)</h4>
+                    <p>Caso o paciente não possa comparecer, a retirada pode ser feita por um representante legal. Para isso, o representante deve apresentar seus próprios documentos (CPF e documento com foto), os documentos do paciente e uma procuração que autoriza a retirada (não precisa de firma reconhecida).</p>
                 </div>
                 <h3>Sugestões de Alimentação e Hidratação</h3>
                 <div class="dicas-saude">
@@ -152,7 +205,7 @@
                 </ul>
                 <h3>Como Retirar</h3>
                 <div class="dicas-saude">
-                    <p>Para retirar, apresente uma autorização emitida pelo aplicativo 'Meu SUS Digital', junto com um documento de identidade com foto e CPF, em uma farmácia credenciada com o selo "Aqui Tem Farmácia Popular".</p>
+                     <p>Para retirar, apresente uma <strong>autorização emitida pelo aplicativo 'Meu SUS Digital'</strong>, junto com um documento de identidade com foto e CPF, em uma farmácia credenciada com o selo "Aqui Tem Farmácia Popular". A retirada por terceiros segue a mesma regra, apresentando a autorização e os documentos.</p>
                 </div>
                 <h3>Sugestões de Alimentação e Hidratação</h3>
                 <div class="dicas-saude">
@@ -170,7 +223,14 @@
                 </ul>
                 <h3>Como Retirar</h3>
                 <div class="dicas-saude">
-                    <p>Para retirar, apresente receita médica, documento com foto e CPF em uma farmácia credenciada com o selo "Aqui Tem Farmácia Popular".</p>
+                    <h4>Documentos Necessários (Regra Geral)</h4>
+                    <p>Para retirar medicamentos ou insumos, o paciente (ou seu representante) deve apresentar os seguintes documentos em uma farmácia credenciada com o selo "Aqui Tem Farmácia Popular":</p>
+                    <ul>
+                        <li><strong>Documento oficial com foto e número do CPF.</strong></li>
+                        <li><strong>Receita médica</strong> dentro do prazo de validade. A receita pode ser do SUS ou de um serviço particular.</li>
+                    </ul>
+                    <h4>Como Retirar para Outra Pessoa (Procuração / Pacientes Acamados)</h4>
+                    <p>Caso o paciente não possa comparecer, a retirada pode ser feita por um representante legal. Para isso, o representante deve apresentar seus próprios documentos (CPF e documento com foto), os documentos do paciente e uma procuração que autoriza a retirada (não precisa de firma reconhecida).</p>
                 </div>
                 <h3>Sugestões de Alimentação e Hidratação</h3>
                 <div class="dicas-saude">
@@ -187,7 +247,14 @@
                 </ul>
                 <h3>Como Retirar</h3>
                 <div class="dicas-saude">
-                    <p>Para retirar, apresente receita médica, documento com foto e CPF em uma farmácia credenciada com o selo "Aqui Tem Farmácia Popular".</p>
+                    <h4>Documentos Necessários (Regra Geral)</h4>
+                    <p>Para retirar medicamentos ou insumos, o paciente (ou seu representante) deve apresentar os seguintes documentos em uma farmácia credenciada com o selo "Aqui Tem Farmácia Popular":</p>
+                    <ul>
+                        <li><strong>Documento oficial com foto e número do CPF.</strong></li>
+                        <li><strong>Receita médica</strong> dentro do prazo de validade. A receita pode ser do SUS ou de um serviço particular.</li>
+                    </ul>
+                    <h4>Como Retirar para Outra Pessoa (Procuração / Pacientes Acamados)</h4>
+                    <p>Caso o paciente não possa comparecer, a retirada pode ser feita por um representante legal. Para isso, o representante deve apresentar seus próprios documentos (CPF e documento com foto), os documentos do paciente e uma procuração que autoriza a retirada (não precisa de firma reconhecida).</p>
                 </div>
                 <h3>Sugestões de Alimentação e Hidratação</h3>
                 <div class="dicas-saude">
@@ -204,7 +271,14 @@
                 </ul>
                 <h3>Como Retirar</h3>
                 <div class="dicas-saude">
-                    <p>Para retirar, apresente receita médica, documento com foto e CPF em uma farmácia credenciada com o selo "Aqui Tem Farmácia Popular".</p>
+                    <h4>Documentos Necessários (Regra Geral)</h4>
+                    <p>Para retirar medicamentos ou insumos, o paciente (ou seu representante) deve apresentar os seguintes documentos em uma farmácia credenciada com o selo "Aqui Tem Farmácia Popular":</p>
+                    <ul>
+                        <li><strong>Documento oficial com foto e número do CPF.</strong></li>
+                        <li><strong>Receita médica</strong> dentro do prazo de validade. A receita pode ser do SUS ou de um serviço particular.</li>
+                    </ul>
+                    <h4>Como Retirar para Outra Pessoa (Procuração / Pacientes Acamados)</h4>
+                    <p>Caso o paciente não possa comparecer, a retirada pode ser feita por um representante legal. Para isso, o representante deve apresentar seus próprios documentos (CPF e documento com foto), os documentos do paciente e uma procuração que autoriza a retirada (não precisa de firma reconhecida).</p>
                 </div>
                 <h3>Sugestões de Alimentação e Hidratação</h3>
                 <div class="dicas-saude">
@@ -229,7 +303,14 @@
                 </ul>
                 <h3>Como Retirar</h3>
                 <div class="dicas-saude">
-                    <p>Para retirar, apresente receita médica, documento com foto e CPF em uma farmácia credenciada com o selo "Aqui Tem Farmácia Popular".</p>
+                    <h4>Documentos Necessários (Regra Geral)</h4>
+                    <p>Para retirar medicamentos ou insumos, o paciente (ou seu representante) deve apresentar os seguintes documentos em uma farmácia credenciada com o selo "Aqui Tem Farmácia Popular":</p>
+                    <ul>
+                        <li><strong>Documento oficial com foto e número do CPF.</strong></li>
+                        <li><strong>Receita médica</strong> dentro do prazo de validade. A receita pode ser do SUS ou de um serviço particular.</li>
+                    </ul>
+                    <h4>Como Retirar para Outra Pessoa (Procuração / Pacientes Acamados)</h4>
+                    <p>Caso o paciente não possa comparecer, a retirada pode ser feita por um representante legal. Para isso, o representante deve apresentar seus próprios documentos (CPF e documento com foto), os documentos do paciente e uma procuração que autoriza a retirada (não precisa de firma reconhecida).</p>
                 </div>
                 <h3>Sugestões de Alimentação</h3>
                 <div class="dicas-saude">
@@ -254,7 +335,16 @@
                 </ul>
                 <h3>Como Retirar</h3>
                 <div class="dicas-saude">
-                    <p>Para retirar, apresente receita médica, documento com foto e CPF em uma farmácia credenciada com o selo "Aqui Tem Farmácia Popular".</p>
+                    <h4>Documentos Necessários (Regra Geral)</h4>
+                    <p>Para retirar medicamentos ou insumos, o paciente (ou seu representante) deve apresentar os seguintes documentos em uma farmácia credenciada com o selo "Aqui Tem Farmácia Popular":</p>
+                    <ul>
+                        <li><strong>Documento oficial com foto e número do CPF do paciente.</strong></li>
+                        <li><strong>Receita, laudo ou atestado médico</strong> que indique a necessidade do uso da fralda.</li>
+                    </ul>
+                    <h4>Caso Específico: Fraldas Geriátricas</h4>
+                    <p>Para a retirada de fraldas geriátricas, o paciente deve ter <strong>60 anos ou mais</strong>. A retirada pode ser feita pelo próprio paciente ou por um representante legal, seguindo as regras de documentação abaixo.</p>
+                    <h4>Como Retirar para Outra Pessoa (Procuração / Pacientes Acamados)</h4>
+                    <p>Caso o paciente não possa comparecer, a retirada pode ser feita por um representante legal. Para isso, o representante deve apresentar seus próprios documentos (CPF e documento com foto), os documentos do paciente e uma procuração que autoriza a retirada (não precisa de firma reconhecida).</p>
                 </div>
                 <h3>Sugestões de Alimentação e Hidratação</h3>
                 <div class="dicas-saude">
@@ -270,7 +360,14 @@
                 </ul>
                 <h3>Como Retirar</h3>
                 <div class="dicas-saude">
-                    <p>Para retirar, apresente receita médica, documento com foto e CPF em uma farmácia credenciada com o selo "Aqui Tem Farmácia Popular".</p>
+                    <h4>Documentos Necessários (Regra Geral)</h4>
+                    <p>Para retirar medicamentos ou insumos, o paciente (ou seu representante) deve apresentar os seguintes documentos em uma farmácia credenciada com o selo "Aqui Tem Farmácia Popular":</p>
+                    <ul>
+                        <li><strong>Documento oficial com foto e número do CPF.</strong></li>
+                        <li><strong>Receita médica</strong> dentro do prazo de validade. A receita pode ser do SUS ou de um serviço particular.</li>
+                    </ul>
+                    <h4>Como Retirar para Outra Pessoa (Procuração / Pacientes Acamados)</h4>
+                    <p>Caso o paciente não possa comparecer, a retirada pode ser feita por um representante legal. Para isso, o representante deve apresentar seus próprios documentos (CPF e documento com foto), os documentos do paciente e uma procuração que autoriza a retirada (não precisa de firma reconhecida).</p>
                 </div>
                 <h3>Sugestões de Alimentação e Hidratação</h3>
                 <div class="dicas-saude">
@@ -288,7 +385,14 @@
                 </ul>
                 <h3>Como Retirar</h3>
                 <div class="dicas-saude">
-                    <p>Para retirar, apresente receita médica, documento com foto e CPF em uma farmácia credenciada com o selo "Aqui Tem Farmácia Popular".</p>
+                    <h4>Documentos Necessários (Regra Geral)</h4>
+                    <p>Para retirar medicamentos ou insumos, o paciente (ou seu representante) deve apresentar os seguintes documentos em uma farmácia credenciada com o selo "Aqui Tem Farmácia Popular":</p>
+                    <ul>
+                        <li><strong>Documento oficial com foto e número do CPF.</strong></li>
+                        <li><strong>Receita médica</strong> dentro do prazo de validade. A receita pode ser do SUS ou de um serviço particular.</li>
+                    </ul>
+                    <h4>Como Retirar para Outra Pessoa (Procuração / Pacientes Acamados)</h4>
+                    <p>Caso o paciente não possa comparecer, a retirada pode ser feita por um representante legal. Para isso, o representante deve apresentar seus próprios documentos (CPF e documento com foto), os documentos do paciente e uma procuração que autoriza a retirada (não precisa de firma reconhecida).</p>
                 </div>
                 <h3>Sugestões de Alimentação e Hidratação</h3>
                 <div class="dicas-saude">
@@ -306,7 +410,7 @@
                         <a href="https://www.gov.br/saude/pt-br/composicao/sectics/farmacia-popular" target="_blank" rel="noopener noreferrer">Programa Farmácia Popular do Brasil</a>,
                         disponibilizado pelo Ministério da Saúde / Governo Federal.
                         <br>
-                        <strong>Fonte do Documento:</strong> ELENCO DE MEDICAMENTOS E INSUMOS DO PROGRAMA FARMÁCIA POPULAR DO BRASIL. Acesso em Junho de 2025.
+                        <strong>Fonte do Documento:</strong> ELENCO DE MEDICAMENTOS E INSUMOS DO PROGRAMA FARMÁCIA POPULAR DO BRASIL. Acesso em Julho de 2025.
                     </p>
                 </div>
             
