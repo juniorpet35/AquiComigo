@@ -1,135 +1,153 @@
-document.addEventListener('DOMContentLoaded', () => {
-  const mapContainer = document.getElementById('map');
-  if (!mapContainer) return;
+document.addEventListener('DOMContentLoaded', async () => {
+    const mapContainer = document.getElementById('map');
+    if (!mapContainer) return;
 
-  // --- CONFIGURAÇÕES E VARIÁVEIS GLOBAIS ---
-  const defaultCoords = [-22.9068, -43.1729];
-  const defaultZoom = 12;
-  let allPharmacies = [];
-  let userMarker = null;
-  let routeLine = null;
+    // --- ÍCONES PERSONALIZADOS ---
+    const createUserIcon = (color) => L.icon({
+        iconUrl: `https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-${color}.png`,
+        shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
+        iconSize: [25, 41], iconAnchor: [12, 41], popupAnchor: [1, -34], shadowSize: [41, 41]
+    });
+    const blueIcon = createUserIcon('blue');
+    const redIcon = createUserIcon('red');
 
-  // --- ELEMENTOS DO DOM ---
-  const cidadeInput = document.getElementById('cidade-input');
-  const bairroInput = document.getElementById('bairro-input');
-  const ruaInput = document.getElementById('rua-input');
-  const searchBtn = document.getElementById('address-search-btn');
-  const resultDiv = document.getElementById('search-result');
+    // --- VARIÁVEIS GLOBAIS ---
+    let map;
+    let allPharmacies = [];
+    let userMarker = null;
+    let routingControl = null;
+    const pharmacyMarkersLayer = L.layerGroup();
 
-  // --- INICIALIZAÇÃO DO MAPA ---
-  const map = L.map(mapContainer).setView(defaultCoords, defaultZoom);
-  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-  }).addTo(map);
-  let pharmacyMarkers = L.layerGroup().addTo(map);
+    // --- ELEMENTOS DO DOM ---
+    const cidadeInput = document.getElementById('cidade-input');
+    const bairroInput = document.getElementById('bairro-input');
+    const searchBtn = document.getElementById('address-search-btn');
+    const resultDiv = document.getElementById('search-result');
+    const routeSummaryDiv = document.getElementById('route-summary');
 
-  // --- FUNÇÕES AUXILIARES ---
-  function haversineDistance(coords1, coords2) {
-      const toRad = (x) => x * Math.PI / 180; const R = 6371; const dLat = toRad(coords2.lat - coords1.lat); const dLon = toRad(coords2.lng - coords1.lng); const lat1 = toRad(coords1.lat); const lat2 = toRad(coords2.lat); const a = Math.sin(dLat / 2) * Math.sin(dLat / 2) + Math.sin(dLon / 2) * Math.sin(dLon / 2) * Math.cos(lat1) * Math.cos(lat2); const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a)); return R * c;
-  }
+    // --- FUNÇÕES ---
+    const normalizarString = (str) => !str ? '' : str.toString().trim().toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+    
+    const updateSearchResult = (message, type = 'info') => {
+        resultDiv.textContent = message;
+        if (type === 'error') resultDiv.style.color = 'red';
+        else if (type === 'success') resultDiv.style.color = 'green';
+        else resultDiv.style.color = 'var(--cor-texto)';
+    };
 
-  function updateSearchResult(message, isError = false) {
-      resultDiv.textContent = message;
-      resultDiv.style.color = isError ? 'red' : 'var(--cor-primaria)';
-  }
+    const adicionarMarcadorFarmacia = (farmacia) => {
+        const marker = L.marker([farmacia.LATITUDE, farmacia.LONGITUDE], { icon: redIcon })
+            .on('click', () => criarRotaParaFarmacia(farmacia));
+        pharmacyMarkersLayer.addLayer(marker);
+    };
 
-  // --- LÓGICA DE CARREGAMENTO DAS FARMÁCIAS ---
-  function loadInitialData() {
-      fetch('../dados/farmacias.json')
-          .then(res => res.ok ? res.json() : Promise.reject(new Error(`Erro de rede: ${res.status}`)))
-          .then(data => {
-              allPharmacies = data;
-              data.forEach(f => {
-                  if (f.LATITUDE != null && f.LONGITUDE != null) {
-                      const enderecoCompleto = `${f.ENDERECO}, ${f.BAIRRO}<br>${f.MUNICIPIO} - ${f.UF}`;
-                      const telefoneInfo = f.TELEFONE ? `<br>Telefone: ${f.TELEFONE}` : '';
-                      const popupContent = `<strong>${f.FARMACIA}</strong><br>${enderecoCompleto}${telefoneInfo}`;
-                      L.marker([f.LATITUDE, f.LONGITUDE]).bindPopup(popupContent).addTo(pharmacyMarkers);
-                  }
-              });
-          })
-          .catch(error => console.error("FALHA AO CARREGAR farmacias.json:", error));
-  }
+    const criarRotaParaFarmacia = (farmacia) => {
+        if (!userMarker) {
+            alert('Não foi possível obter sua localização para criar a rota. Por favor, permita o acesso à sua localização.');
+            return;
+        }
+        if (routingControl) {
+            map.removeControl(routingControl);
+        }
+        
+        routingControl = L.Routing.control({
+            waypoints: [ userMarker.getLatLng(), L.latLng(farmacia.LATITUDE, farmacia.LONGITUDE) ],
+            show: false,
+            createMarker: () => null,
+            lineOptions: { styles: [{ color: 'var(--cor-primaria)', opacity: 0.8, weight: 6 }] }
+        }).on('routesfound', function(e) {
+            const summary = e.routes[0].summary;
+            const distance = (summary.totalDistance / 1000).toFixed(2);
+            const time = Math.round(summary.totalTime / 60);
+            
+            const telefoneInfo = farmacia.TELEFONE ? `<p>📞 <strong>Telefone:</strong> ${farmacia.TELEFONE}</p>` : '';
 
-  // --- LÓGICA DA BUSCA (VERSÃO FINAL COM ROTA E MARCADOR DO USUÁRIO) ---
-  searchBtn.addEventListener('click', async () => {
-      const cidade = cidadeInput.value.trim();
-      const bairro = bairroInput.value.trim();
-      const rua = ruaInput.value.trim();
+            routeSummaryDiv.innerHTML = `
+                <h3>${farmacia.FARMACIA}</h3>
+                <p>📍 <strong>Endereço:</strong> ${farmacia.ENDERECO}</p>
+                ${telefoneInfo}
+                <hr>
+                <p>🚗 <strong>Distância:</strong> ${distance} km &nbsp;&nbsp;|&nbsp;&nbsp; ⏱️ <strong>Tempo Estimado:</strong> ${time} minutos</p>
+            `;
+        }).addTo(map);
+    };
 
-      if (!cidade || !bairro) {
-          updateSearchResult("Preencha os campos Cidade e Bairro.", true);
-          return;
-      }
-      updateSearchResult("Localizando endereço de referência...");
+    const buscarFarmacias = async () => {
+        const cidade = cidadeInput.value.trim();
+        const bairro = bairroInput.value.trim();
+        if (!cidade) {
+            updateSearchResult("Por favor, informe a cidade.", 'error');
+            return;
+        }
+        updateSearchResult('Buscando...', 'info');
+        pharmacyMarkersLayer.clearLayers();
+        routeSummaryDiv.innerHTML = '';
 
-      try {
-          if (userMarker) map.removeLayer(userMarker);
-          if (routeLine) map.removeLayer(routeLine);
+        const cidadeNorm = normalizarString(cidade);
+        const bairroNorm = normalizarString(bairro);
 
-          let geoData = [];
-          
-          if (rua) {
-              const addressString1 = [rua, bairro, cidade, 'Brasil'].join(', ');
-              const nominatimResponse = await fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(addressString1)}`);
-              if(nominatimResponse.ok) geoData = await nominatimResponse.json();
-          }
-          if (geoData.length === 0) {
-              const addressString2 = [bairro, cidade, 'Brasil'].join(', ');
-              const nominatimResponse = await fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(addressString2)}`);
-              if(nominatimResponse.ok) geoData = await nominatimResponse.json();
-          }
-          if (geoData.length === 0) {
-              const addressString3 = [cidade, 'Brasil'].join(', ');
-              const nominatimResponse = await fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(addressString3)}`);
-              if(nominatimResponse.ok) geoData = await nominatimResponse.json();
-          }
+        // --- LÓGICA DE BUSCA SIMPLIFICADA ---
+        // Adiciona "RJ" diretamente na busca para garantir a precisão dentro do estado.
+        try {
+            const searchQuery = bairroNorm 
+                ? `${bairro}, ${cidade}, RJ` 
+                : `${cidade}, RJ`;
+                
+            const nominatimResponse = await fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(searchQuery)}&countrycodes=br`);
+            if (nominatimResponse.ok) {
+                const geoData = await nominatimResponse.json();
+                if (geoData.length > 0) {
+                    map.setView(L.latLng(geoData[0].lat, geoData[0].lon), 14);
+                }
+            }
+        } catch (error) { console.error("Erro ao geocodificar:", error); }
 
-          if (geoData.length === 0) throw new Error("Endereço de referência não localizado.");
-          
-          const userCoords = { lat: parseFloat(geoData[0].lat), lng: parseFloat(geoData[0].lon) };
+        // Filtra e exibe as farmácias
+        let resultados = allPharmacies.filter(f => normalizarString(f.MUNICIPIO) === cidadeNorm);
+        if (bairroNorm) {
+            resultados = resultados.filter(f => normalizarString(f.BAIRRO).includes(bairroNorm));
+        }
 
-          if (allPharmacies.length === 0) throw new Error("Dados das farmácias não carregados.");
-          
-          let closestPharmacy = null;
-          let minDistance = Infinity;
-          allPharmacies.forEach(f => {
-              if (f.LATITUDE != null && f.LONGITUDE != null) {
-                  const distance = haversineDistance(userCoords, { lat: f.LATITUDE, lng: f.LONGITUDE });
-                  if (distance < minDistance) { minDistance = distance; closestPharmacy = f; }
-              }
-          });
+        if (resultados.length > 0) {
+            resultados.forEach(adicionarMarcadorFarmacia);
+            updateSearchResult(`${resultados.length} farmácia(s) encontrada(s).`, 'success');
+        } else {
+            updateSearchResult('Nenhuma farmácia encontrada para esta busca.', 'info');
+        }
+    };
 
-          if (!closestPharmacy) throw new Error("Nenhuma farmácia encontrada próximo a este local.");
-          
-          updateSearchResult(`Próxima: ${closestPharmacy.FARMACIA} (${minDistance.toFixed(2)} km)`);
+    const sucessoGeolocalizacao = (position) => {
+        const userLatLng = L.latLng(position.coords.latitude, position.coords.longitude);
+        map.setView(userLatLng, 15);
+        if (userMarker) map.removeLayer(userMarker);
+        userMarker = L.marker(userLatLng, { icon: blueIcon }).addTo(map);
+    };
 
-          // --- ETAPA FINAL: RE-ADICIONANDO MARCADOR DO USUÁRIO, ROTA E ZOOM ---
-          
-          const userPoint = [userCoords.lat, userCoords.lng];
-          const pharmacyPoint = [closestPharmacy.LATITUDE, closestPharmacy.LONGITUDE];
+    const erroGeolocalizacao = (error) => {
+        console.warn(`ERRO DE GEOLOCALIZAÇÃO (${error.code}): ${error.message}`);
+        updateSearchResult("Não foi possível obter sua localização.", 'info');
+    };
 
-          // 1. Adiciona o marcador do seu local
-          userMarker = L.marker(userPoint).addTo(map).bindPopup(`<b>Sua Localização de Referência</b><br>${bairro}, ${cidade}`).openPopup();
+    const inicializar = async () => {
+        map = L.map(mapContainer).setView([-22.9068, -43.1729], 12); // Padrão: Rio de Janeiro
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        }).addTo(map);
+        map.addLayer(pharmacyMarkersLayer);
 
-          // 2. Adiciona a linha conectando os dois pontos
-          routeLine = L.polyline([userPoint, pharmacyPoint], { color: 'var(--cor-sucesso)', weight: 4, opacity: 0.8 }).addTo(map);
+        try {
+            const response = await fetch('../dados/farmacias.json');
+            if (!response.ok) throw new Error(`Erro de rede: ${response.status}`);
+            allPharmacies = await response.json();
+        } catch (error) {
+            console.error("FALHA CRÍTICA AO CARREGAR farmacias.json:", error);
+            updateSearchResult("Não foi possível carregar os dados das farmácias.", 'error');
+            return;
+        }
 
-          // 3. Ajusta o mapa para mostrar ambos os pontos
-          map.fitBounds([userPoint, pharmacyPoint], { padding: [50, 50] });
+        navigator.geolocation.getCurrentPosition(sucessoGeolocalizacao, erroGeolocalizacao);
+        searchBtn.addEventListener('click', buscarFarmacias);
+    };
 
-          // 4. Encontra e abre o popup da farmácia
-          pharmacyMarkers.eachLayer(marker => {
-              if (marker.getLatLng().lat == closestPharmacy.LATITUDE && marker.getLatLng().lng == closestPharmacy.LONGITUDE) {
-                  marker.openPopup();
-              }
-          });
-
-      } catch (error) {
-          console.error("Erro na busca:", error);
-          updateSearchResult(error.message, true);
-      }
-  });
-
-  loadInitialData();
+    inicializar();
 });
