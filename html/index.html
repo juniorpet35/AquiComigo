@@ -4,15 +4,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Projeto Aqui Comigo</title>
-    <link rel="icon" href="../img/favicon.ico" type="image/x-icon" />
+    <link rel="icon" href="../img/icon-aquicomigo.ico" type="image/x-icon" />
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet-routing-machine@3.2.12/dist/leaflet-routing-machine.css" />
     <link rel="stylesheet" href="../css/style.css">
 </head>
 <body>
 
     <header class="navbar">
         <a href="#"><img src="../img/logo-aquicomigo.png" alt="Logo Aqui Comigo" class="logo"></a>
-        <nav>
+        <nav class="nav-principal">
             <ul>
                 <li><a href="#sobre">Sobre</a></li>
                 <li><a href="#missao">Missão</a></li>
@@ -21,41 +22,97 @@
             </ul>
         </nav>
         <button id="theme-toggle" class="theme-button">🌙</button>
+        <button class="hamburger-menu">
+            <div class="bar"></div>
+            <div class="bar"></div>
+            <div class="bar"></div>
+        </button>
     </header>
 
     <main>
-      <section id="mapa-container">
-
-        <div id="search-panel">
-            <h2>Busque por Endereço</h2>
-            <p>Preencha os campos para encontrar a farmácia mais próxima de você.</p>
-            
-            <div class="address-inputs">
-                <input type="text" id="cidade-input" placeholder="Cidade*">
-                <input type="text" id="bairro-input" placeholder="Bairro*">
-                <input type="text" id="rua-input" placeholder="Rua (Opcional)">
-            </div>
-            <button id="address-search-btn">Buscar Farmácia</button>
-            <div id="search-result"></div>
-        </div>
-    
-      <div id="map"></div>
-    
-    </section>
-
         <section id="chamada-acao" class="hero">
             <h1>Bem-vindo ao Projeto Aqui Comigo</h1>
-            <p>Conectando pessoas, comunidades e oportunidades sociais.</p>
-            <a href="https://forms.gle/3UYj4f3Qxi6Cv4fY7" target="_blank" rel="noopener noreferrer" id="open-form-btn" class="cta-button">Quero Participar</a>
+            <p>Conectando pessoas a informações de saúde e acesso a medicamentos gratuitos.</p>
         </section>
-        
-        </main>
+
+        <section id="mapa-container">
+            <div id="search-panel">
+                <h2>Busque por Endereço</h2>
+                <p>Preencha os campos para encontrar as farmácias na sua região.</p>
+                <div class="address-inputs">
+                    <input type="text" id="cidade-input" placeholder="Cidade*">
+                    <input type="text" id="bairro-input" placeholder="Bairro (Opcional)">
+                </div>
+                <button id="address-search-btn">Buscar Farmácias</button>
+                <div id="search-result"></div>
+            </div>
+            <div id="map"></div>
+        </section>
+        <div id="route-summary"></div>
+
+        <section id="sobre">
+            <h2>Sobre o Projeto</h2>
+            <p class="section-description">
+                O "Aqui Comigo" nasceu da necessidade de simplificar o acesso à informação de saúde e aos programas de assistência farmacêutica, como o Farmácia Popular. Sabemos que, para muitas pessoas, navegar pelo sistema de saúde pode ser um desafio. Nosso objetivo é ser uma ponte confiável entre você e os recursos disponíveis para o seu bem-estar.
+            </p>
+            <p class="section-description">
+                Acreditamos que informação clara, acessível e centralizada é uma ferramenta poderosa para o autocuidado e para a promoção da saúde na comunidade. Este projeto é um esforço para empoderar cada cidadão com o conhecimento necessário para cuidar melhor de si e de sua família.
+            </p>
+        </section>
+
+        <section id="missao" class="section-light">
+            <h2>Nossa Missão, Visão e Valores</h2>
+            <div class="missao-container">
+                <div class="missao-item">
+                    <h3>Missão</h3>
+                    <p>Facilitar o acesso a medicamentos gratuitos e informações de saúde confiáveis, desmistificando processos e conectando a comunidade a programas essenciais de bem-estar, com foco inicial no Farmácia Popular.</p>
+                </div>
+                <div class="missao-item">
+                    <h3>Visão</h3>
+                    <p>Ser a principal referência de apoio à saúde comunitária no Brasil, reconhecida pela precisão de suas informações e pelo impacto positivo na vida das pessoas, expandindo nossa atuação para novas áreas do cuidado.</p>
+                </div>
+                <div class="missao-item">
+                    <h3>Valores</h3>
+                    <ul>
+                        <li>Acessibilidade: Informação clara e para todos.</li>
+                        <li>Confiança: Dados baseados em fontes oficiais.</li>
+                        <li>Empatia: Entender e atender às necessidades da comunidade.</li>
+                        <li>Empoderamento: Dar autonomia ao cidadão através do conhecimento.</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section id="contato">
+            <h2>Entre em Contato</h2>
+            <p class="section-description">Sua opinião é muito importante para nós! Se você tem dúvidas, sugestões ou quer fazer parte do projeto, utilize um dos canais abaixo.</p>
+            <div class="contato-container">
+                <div class="contato-item">
+                    <h3>📧 E-mail</h3>
+                    <p>Para parcerias, sugestões ou dúvidas gerais, envie um e-mail para:</p>
+                    <a href="mailto:petjunior35@gmail.com">email@email.com.br</a>
+                </div>
+                <div class="contato-item">
+                    <h3>📝 Formulário de Participação</h3>
+                    <p>Quer sugerir novas farmácias, informar sobre dados desatualizados ou simplesmente participar? Use nosso formulário!</p>
+                    <a href="https://forms.gle/3UYj4f3Qxi6Cv4fY7" target="_blank" rel="noopener noreferrer" class="cta-button-small">Quero Participar</a>
+                </div>
+                <div class="contato-item">
+                    <h3>📱 Redes Sociais</h3>
+                    <p>Siga-nos para receber dicas de saúde e novidades sobre o projeto.</p>
+                    <a href="#" class="social-link">Instagram</a>
+                    <a href="#" class="social-link">Facebook</a>
+                </div>
+            </div>
+        </section>
+    </main>
 
     <footer>
         <p>&copy; 2025 Projeto Aqui Comigo. Todos os direitos reservados.</p>
     </footer>
 
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+    <script src="https://unpkg.com/leaflet-routing-machine@3.2.12/dist/leaflet-routing-machine.min.js"></script>
     <script src="../js/map.js"></script>
     <script src="../js/script.js"></script>
 </body>
